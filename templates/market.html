@@ -1,0 +1,26 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/market.css' %}">
+</head>
+<body>
+<div align="center">
+  <form action="search" method="get">
+    <label for="db">Choose a database:</label>
+
+    <select name="db" id="db_select" required>
+    <option value="SQL">SQL</option>
+    <option value="NoSQL">NoSQL</option>
+    </select>
+
+    <label for="keyword">Keyword</label>
+    <input type="text" id="keyword" name="keyword"><br><br>
+
+    <button type="submit">SEARCH</button>
+
+  </form>
+</div>
+</body>
+</html>
