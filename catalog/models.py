@@ -7,7 +7,6 @@ class MovieType(models.Model):
     type = models.CharField(max_length=5)
 
 
-
 class MovieTag(models.Model):
     tag = models.CharField(max_length=10)
 
