@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Catalog,ItemTag
+from .models import Movie, MovieTag, MovieType
 from django.http import HttpResponse
 # Create your views here.
 
@@ -17,7 +17,7 @@ def search(request):
     db = request.GET['db']
     print(keyword, db)
     if db == "SQL":
-        data = Catalog.objects.all()
+        data = Movie.objects.all()
     else:
         data = None
     return render(request, 'result.html', {'query': data})
