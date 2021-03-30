@@ -19,6 +19,7 @@ def search(request):
     print(keyword)
     start_time = time.time()
     data = query_search(keyword)
+    print(data)
     elapsed_time = time.time() - start_time
     return render(request, 'result.html', {'query': data, 'query_time': elapsed_time})
 
@@ -43,4 +44,4 @@ def query_search(keyword, date_select=None, type_select=None, tag_select=None, p
             for word in tag_select:
                 result = result.filter(Q(MovieType__type=word))
 
-    return "result"
+    return result
