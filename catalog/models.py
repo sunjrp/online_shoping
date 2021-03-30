@@ -4,7 +4,7 @@ from django.db import models
 
 
 class MovieType(models.Model):
-    type = models.CharField(max_length=5)
+    type = models.CharField(max_length=10)
 
 
 class MovieTag(models.Model):
@@ -23,4 +23,3 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.name, self.price, self.rate
-
