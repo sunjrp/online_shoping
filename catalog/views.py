@@ -17,7 +17,7 @@ def search(request):
     db = request.GET['db']
     print(keyword, db)
     if db == "SQL":
-        data = Movie.objects.all()
+        data = Movie.objects.filter(name__icontains = keyword)
     else:
         data = None
     return render(request, 'result.html', {'query': data})
