@@ -80,8 +80,6 @@ def market(request):
 def search(request):
     keyword = request.GET['keyword']
     print(keyword)
-    request_movies_genre()
-    request_movies_all()
     start_time = time.time()
     data = query_search(keyword)
     print(data)
