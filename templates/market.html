@@ -1,26 +1,28 @@
+{% extends "home.html" %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/market.css' %}">
-</head>
-<body>
-<div align="center">
-  <form action="search" method="get">
-    <label for="db">Choose a database:</label>
+{% block title %} Search {% endblock %}
+{% block content %}
 
-    <select name="db" id="db_select" required>
-    <option value="SQL">SQL</option>
-    <option value="NoSQL">NoSQL</option>
-    </select>
-
-    <label for="keyword">Keyword</label>
-    <input type="text" id="keyword" name="keyword"><br><br>
-
-    <button type="submit">SEARCH</button>
-
-  </form>
+<div class="container-sm" style="width: 52.5rem;">
+  <div class="shadow p-2 mb-5 bg-dark rounded">
+    <div class="card" style="border:3px ; width: 50rem;" >
+      <div align="center">
+        <div class="card-body">
+          <form action="search" method="get">
+            <label for="db"><h5>Choose a Database:</h5></label>
+            <select name="db" id="db_select" required>
+              <option value="SQL">SQL</option>
+              <option value="NoSQL">NoSQL</option>
+            </select>
+            <label for="keyword"><h5>&nbsp;Keyword</h5></label>
+            <input type="text" id="keyword" name="keyword"><br><br>
+            <button type="submit" class="btn btn-primary">SEARCH</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-</body>
-</html>
+
+
+{% endblock %}
