@@ -20,7 +20,7 @@ class Product(models.Model):
         return url
 
 
-class Type(models.Model):
+class Genre(models.Model):
     has = models.ManyToManyField(Product)
     name = models.CharField(max_length=20)
 
