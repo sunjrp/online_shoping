@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'online_shoping.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'online_shoping',
+        'NAME': 'onshop_testdb',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '3.1.142.80',
