@@ -3,12 +3,18 @@ from django.db import models
 # Create your models here.
 
 
+class Genre(models.Model):
+    name = models.CharField(max_length=20)
+
+
 class Product(models.Model):
     title = models.CharField(max_length=20)
+    genre = models.ManyToManyField(Genre)
     price = models.CharField(max_length=10)
     rating = models.CharField(max_length=5)
     storyline = models.CharField(max_length=200)
     thumbnail = models.ImageField(upload_to='images/')
+    thumbnail_url = models.URLField(default=None)
     release_date = models.DateField()
 
     @property
@@ -18,11 +24,6 @@ class Product(models.Model):
         except:
             url = ''
         return url
-
-
-class Genre(models.Model):
-    has = models.ManyToManyField(Product)
-    name = models.CharField(max_length=20)
 
 
 class User(models.Model):
