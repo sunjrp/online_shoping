@@ -99,6 +99,17 @@ def query_search(keyword, movie_id=None, date_select=None, type_select=None, tag
 def details(request, movie_id):
     print(movie_id)
     start_time = time.time()
-    data = query_search("", movie_id=movie_id)[0]
+    try:
+        data = query_search("", movie_id=movie_id)[0]
+    except IndexError:
+        data = "Can't find this movie id"
     elapsed_time = time.time() - start_time
     return render(request, 'movie_detail.html', {'query': data, 'query_time': elapsed_time})
+
+
+def add_cart(request, movie_id):
+    print(movie_id)
+    start_time = time.time()
+    data = query_search("", movie_id=movie_id)[0]
+    elapsed_time = time.time() - start_time
+    return render(request, 'cart.html', {'query': data, 'query_time': elapsed_time})
