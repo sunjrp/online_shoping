@@ -13,7 +13,7 @@ class Product(models.Model):
     price = models.CharField(max_length=10)
     rating = models.CharField(max_length=5)
     storyline = models.CharField(max_length=200)
-    thumbnail = models.ImageField(upload_to='images/')
+    #thumbnail = models.ImageField(upload_to='images/')
     thumbnail_url = models.URLField(default=None)
     release_date = models.DateField()
 
