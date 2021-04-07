@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 import time
 from django.db.models import Q
@@ -6,11 +6,22 @@ from django.http import HttpResponse
 import requests
 import string
 import random
+from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 
 
 api_key = "fcc6fff35de0b2b9470d180bb4c76555"  #for themoviedb.org
 
+def registerPage(request):
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    context = {'form': form}
+    return render(request, 'accounts/register.html', context)
 
 def request_movies_genre():
     url_tv = f"https://api.themoviedb.org/3/genre/tv/list?api_key={api_key}"
@@ -66,7 +77,7 @@ def market(request):
     for genre_obj in genre:
         if genre_obj.name != "":
             genre_out.append(genre_obj.name)
-    rate = Product.objects.all()
+    rate = Product.  objects.all()
     rate_out = []
     for rate_obj in rate:
         if rate_obj.rating != "":
