@@ -7,21 +7,46 @@ import requests
 import string
 import random
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+
 # Create your views here.
 
 
 api_key = "fcc6fff35de0b2b9470d180bb4c76555"  #for themoviedb.org
 
 def registerPage(request):
-    form = UserCreationForm()
-
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    context = {'form': form}
-    return render(request, 'accounts/register.html', context)
+        username = request.POST.get('username', "")
+        password = request.POST.get('password', "")
+        if not User.objects.filter(username=username).exists():
+            user1 = User.objects.create(username=username)
+            user1.set_password(password)
+            user1.save()
+            return render(request, 'login.html')
+        else:
+            error = "Error Please Check"
+            return render(request, 'register.html', {'error':error})
+
+    return render(request, 'register.html', )
+
+def user_login(request):
+    if request.method=='POST':
+        username = request.POST.get('username', "")
+        password = request.POST.get('password', "")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            error = "Username or Password is INCORRECT"
+            return render(request, 'login.html', {'error':error})
+    else:
+        return render(request,'login.html')
+
+def user_logout(request):
+    logout(request)
+    return render(request, 'home.html')
 
 def request_movies_genre():
     url_tv = f"https://api.themoviedb.org/3/genre/tv/list?api_key={api_key}"

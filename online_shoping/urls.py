@@ -21,12 +21,14 @@ from catalog import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home),
-    path('market', views.market),
+    path('', views.home, name='home'),
+    path('market', views.market, name='market'),
     path('search', views.search),
     path('movie_detail/<int:movie_id>', views.details),
     path('cart/<int:movie_id>', views.add_cart),
-    path('register', views.registerPage)
+    path('register', views.registerPage, name='register'),
+    path('login', views.user_login, name="login"),
+    path('logout', views.user_logout, name="logout")
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
