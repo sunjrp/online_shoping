@@ -75,14 +75,12 @@ WSGI_APPLICATION = 'online_shoping.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'onshop_testdb',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '3.1.142.80',
-        'PORT': '3306',
+        'ENGINE': 'djongo',
+        'NAME': 'db_mongo',
     }
 }
+
+
 
 
 # Password validation

@@ -26,6 +26,7 @@ urlpatterns = [
     path('search', views.search),
     path('movie_detail/<int:movie_id>', views.details),
     path('cart/<int:movie_id>', views.add_cart),
+    path('register', views.registerPage)
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
