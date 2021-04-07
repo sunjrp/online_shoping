@@ -61,21 +61,34 @@ def home(request):
 
 
 def market(request):
-    return render(request, 'market.html', {'data': 'a lot of data'})
+    genre = Genre.objects.all()
+    genre_out = [""]
+    for genre_obj in genre:
+        if genre_obj.name != "":
+            genre_out.append(genre_obj.name)
+    rate = Product.objects.all()
+    rate_out = []
+    for rate_obj in rate:
+        if rate_obj.rating != "":
+            rate_out.append(rate_obj.rating)
+
+    return render(request, 'market.html', {'data': 'a lot of data', 'genre': genre_out, 'rating': rate_out})
 
 
 def search(request):
     keyword = request.GET['keyword']
+    genre = request.GET['genres']
     start_time = time.time()
-    data = query_search(keyword)
+    if genre:
+        data = query_search(keyword, genre_select=genre)
+    else:
+        data = query_search(keyword)
     elapsed_time = time.time() - start_time
     return render(request, 'result.html', {'query': data, 'query_time': elapsed_time})
 
 
-def query_search(keyword, movie_id=None, date_select=None, type_select=None, tag_select=None, price_select=None):
+def query_search(keyword, movie_id=None, date_select=None, genre_select=None, tag_select=None, price_select=None):
     """search data in DB by time and keyword and return query set"""
-    if type_select is None:
-        type_select = []
     result = Product.objects.all()
     if date_select:
         result = result.exclude(Q(release_date__gt=date_select[0]) | Q(release_date__lt=date_select[1]))
@@ -87,12 +100,11 @@ def query_search(keyword, movie_id=None, date_select=None, type_select=None, tag
         result = result.filter(Q(title__startswith=keyword))
         if price_select:
             result = result.exclude(Q(price__gt=price_select[0]) | Q(price__lt=price_select[1]))
-        if type_select:
-            for word in type_select:
-                result = result.filter(Q(MovieType__type=word))
+        if genre_select:
+            result = result.filter(Q(genre__name=genre_select))
         if tag_select:
             for word in tag_select:
-                result = result.filter(Q(MovieType__type=word))
+                result = result.filter(Q(genre=word))
     return result
 
 

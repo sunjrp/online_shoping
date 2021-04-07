@@ -9,8 +9,17 @@
       <div align="center">
         <div class="card-body">
           <form action="search" method="get">
-            <label for="keyword"><h5>&nbsp;Keyword</h5></label>
-            <input type="text" id="keyword" name="keyword"><br><br>
+            <div>
+              <label for="keyword"><h5>&nbsp;Keyword</h5></label>
+              <input type="text" id="keyword" name="keyword"><br><br>
+
+              <label for="genres">genre :</label>
+              <select name="genres" id="genres">
+              {% for g in genre %}
+                <option value="{{g}}">{{g}}</option>
+              {% endfor %}
+              </select>
+            </div>
             <button type="submit" class="btn btn-primary">SEARCH</button>
           </form>
         </div>
