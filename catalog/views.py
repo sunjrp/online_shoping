@@ -133,7 +133,7 @@ def query_search(keyword, movie_id=None, date_select=None, genre_select=None, ta
         result = result.filter(Q(id=movie_id))
 
     if keyword != "":  # if have specific keyword
-        result = result.filter(Q(title__startswith=keyword))
+        result = result.filter(Q(title__icontains=keyword))
         if price_select:
             result = result.exclude(Q(price__gt=price_select[0]) | Q(price__lt=price_select[1]))
         if genre_select:
