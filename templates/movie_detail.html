@@ -27,7 +27,11 @@
 </head>
 
 <body style="background-color:#E5E4E2;">
-<br><br><br>
+<br><br>
+<div class="container"><div class="container-fliud"><div align="right">
+    <span class='btn btn-dark'><h5>Query time :&nbsp;&nbsp;&nbsp;&nbsp;{{query_time}}</h5></span>
+</div></div></div>
+    
 <div class="container">
     <div class="card">
         <div class="container-fliud">
@@ -49,18 +53,17 @@
                     <p class="product-description">{{query.storyline}}</p><br><br>
                     <tr class="un_border" >
                         <td colspan="3"><div class="un_border_div"></div></td>
-                    </tr><br>
+                    </tr><br><br>
                     <h5>Movie id :&nbsp;&nbsp;&nbsp;&nbsp;{{query.id}}</h5>
                     <h5>Genre :&nbsp;&nbsp;
                         <span class='btn btn-warning' style="color:#FFFFFF"><strong>{{query.genre}}</strong></span>
-                    </h5>
-                    <h5>Query time :&nbsp;&nbsp;&nbsp;&nbsp;{{query_time}}</h5><br><br>
+                    </h5><br><br>                   
                     <h3 class="price">Price: <span>{{query.price}}</span></h3>
                     <a href="/cart/{{query.id}}" class="btn btn-primary">Add to cart</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div><br><br>
 </body>
 </html>
