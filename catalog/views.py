@@ -56,7 +56,7 @@ def user_logout(request):
 
 
 def gen_movies(request):
-    add_movie(1000)
+    add_movie(100000)
     return render(request, 'home.html')
 
 
@@ -76,7 +76,7 @@ def create_movie(size):
     d1 = datetime.strptime('1/1/2000 1:30 PM', '%m/%d/%Y %I:%M %p')
     d2 = datetime.strptime('1/1/2021 4:50 AM', '%m/%d/%Y %I:%M %p')
     for item in range(1, size+1):
-        movie_structure['title'] = names.get_first_name()
+        movie_structure['title'] = names.get_full_name()
         movie_structure['price'] = random.randint(100, 10000)
         movie_structure['rating'] = random.randrange(0, 10)
         movie_structure['storyline'] = names.get_full_name()
@@ -87,6 +87,7 @@ def create_movie(size):
         movie_structure['genre'] = set(movie_structure['genre'])
         movie_list.append(movie_structure.copy())
         movie_structure.clear()
+        print(item)
     return movie_list
 
 
@@ -99,7 +100,6 @@ def add_genres():
 
 def add_movie(size):
     movie_list = create_movie(size)
-    print(movie_list)
     for movie in movie_list:
         print(movie)
         p = Product(title=movie["title"],

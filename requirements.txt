@@ -8,3 +8,5 @@ sqlparse==0.2.4
 mysqlclient
 requests
 names
+random-word
+pyyaml
