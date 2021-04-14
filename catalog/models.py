@@ -8,7 +8,7 @@ class Genre(models.Model):
 
 
 class Product(models.Model):
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=40)
     genre = models.ManyToManyField(Genre)
     price = models.CharField(max_length=10)
     rating = models.CharField(max_length=5)

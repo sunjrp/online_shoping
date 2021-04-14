@@ -56,7 +56,7 @@ def user_logout(request):
 
 
 def gen_movies(request):
-    add_movie(100000)
+    add_movie(10000)
     return render(request, 'home.html')
 
 
@@ -71,7 +71,7 @@ def create_movie(size):
     movie_structure = {'title': '', 'price': '', 'rating': '', 'storyline': '', 'release_date': '', 'genre': [] }
     movie_list = []
     # for first time run you must add genre first
-    if False:
+    if True:
         add_genres()
     d1 = datetime.strptime('1/1/2000 1:30 PM', '%m/%d/%Y %I:%M %p')
     d2 = datetime.strptime('1/1/2021 4:50 AM', '%m/%d/%Y %I:%M %p')
@@ -87,7 +87,6 @@ def create_movie(size):
         movie_structure['genre'] = set(movie_structure['genre'])
         movie_list.append(movie_structure.copy())
         movie_structure.clear()
-        print(item)
     return movie_list
 
 
@@ -101,13 +100,11 @@ def add_genres():
 def add_movie(size):
     movie_list = create_movie(size)
     for movie in movie_list:
-        print(movie)
         p = Product(title=movie["title"],
                     price=movie["price"],
                     rating=str(movie["rating"]),
                     storyline=movie["storyline"],
                     release_date=movie["release_date"])
-        print(p)
         p.save()
         for id in movie["genre"]:
             temp = Genre.objects.get(id=id)
