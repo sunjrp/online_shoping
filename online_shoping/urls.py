@@ -28,7 +28,8 @@ urlpatterns = [
     path('cart/<int:movie_id>', views.add_cart),
     path('register', views.registerPage, name='register'),
     path('login', views.user_login, name="login"),
-    path('logout', views.user_logout, name="logout")
+    path('logout', views.user_logout, name="logout"),
+    path('gen_movies', views.gen_movies)
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

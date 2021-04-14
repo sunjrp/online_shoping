@@ -3,9 +3,12 @@ from .models import *
 import time
 from django.db.models import Q
 from django.http import HttpResponse
+from datetime import timedelta, datetime
 import requests
 import string
 import random
+from random import randrange
+import names
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -14,6 +17,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 api_key = "fcc6fff35de0b2b9470d180bb4c76555"  #for themoviedb.org
+
 
 def registerPage(request):
     if request.method == 'POST':
@@ -30,6 +34,7 @@ def registerPage(request):
 
     return render(request, 'register.html', )
 
+
 def user_login(request):
     if request.method=='POST':
         username = request.POST.get('username', "")
@@ -44,52 +49,70 @@ def user_login(request):
     else:
         return render(request,'login.html')
 
+
 def user_logout(request):
     logout(request)
+    return redirect('home.html')
+
+
+def gen_movies(request):
+    add_movie(1000)
     return render(request, 'home.html')
 
-def request_movies_genre():
-    url_tv = f"https://api.themoviedb.org/3/genre/tv/list?api_key={api_key}"
-    url_movie = f"https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}"
-    for url in [url_tv, url_movie]:
-        response = requests.get(url)
-        load = response.json()
-        print(load)
-        for genre in load["genres"]:
-            print(genre)
-            p = Genre(id=genre["id"], name=genre["name"])
+
+def random_date(start, end):
+    delta = end - start
+    int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
+    random_second = randrange(int_delta)
+    return start + timedelta(seconds=random_second)
+
+
+def create_movie(size):
+    movie_structure = {'title': '', 'price': '', 'rating': '', 'storyline': '', 'release_date': '', 'genre': [] }
+    movie_list = []
+    # for first time run you must add genre first
+    if False:
+        add_genres()
+    d1 = datetime.strptime('1/1/2000 1:30 PM', '%m/%d/%Y %I:%M %p')
+    d2 = datetime.strptime('1/1/2021 4:50 AM', '%m/%d/%Y %I:%M %p')
+    for item in range(1, size+1):
+        movie_structure['title'] = names.get_first_name()
+        movie_structure['price'] = random.randint(100, 10000)
+        movie_structure['rating'] = random.randrange(0, 10)
+        movie_structure['storyline'] = names.get_full_name()
+        movie_structure['release_date'] = random_date(d1, d2)
+        movie_structure['genre'] = []
+        for i in range(2):
+            movie_structure['genre'].append(random.randint(1, 9))
+        movie_structure['genre'] = set(movie_structure['genre'])
+        movie_list.append(movie_structure.copy())
+        movie_structure.clear()
+    return movie_list
+
+
+def add_genres():
+    genre_list = ['Action', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Romance', 'Romance', 'Western']
+    for genre in genre_list:
+        g = Genre(name=genre)
+        g.save()
+
+
+def add_movie(size):
+    movie_list = create_movie(size)
+    print(movie_list)
+    for movie in movie_list:
+        print(movie)
+        p = Product(title=movie["title"],
+                    price=movie["price"],
+                    rating=str(movie["rating"]),
+                    storyline=movie["storyline"],
+                    release_date=movie["release_date"])
+        print(p)
+        p.save()
+        for id in movie["genre"]:
+            temp = Genre.objects.get(id=id)
+            p.genre.add(temp)
             p.save()
-
-
-def request_movies_all():
-    alphabet_list = list(string.ascii_lowercase)
-    print(alphabet_list)
-    for alphabet in alphabet_list:
-        for page in range(1,3):
-            url = f"https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={alphabet}&page={page}"
-            response = requests.get(url)
-            load = response.json()
-            for movie in load["results"]:
-                try:
-                    poster_path = movie["poster_path"]
-                    img_url = f"https://image.tmdb.org/t/p/original{poster_path}"
-                    p = Product(title=movie["title"],
-                                id=movie["id"],
-                                price=str(random.randint(0, 10000)),
-                                rating=str(movie["vote_average"]),
-                                storyline=movie["overview"],
-                                thumbnail_url=img_url,
-                                release_date=movie["release_date"])
-                    p.save()
-                    print(p)
-                    if movie["genre_ids"]:
-                        for id_num in movie["genre_ids"]:
-                            print(id_num)
-                            movie_genres = Genre(id=id_num)
-                            movie_genres.save()
-                            p.genre.add(movie_genres)
-                except:
-                    pass
 
 
 def home(request):
@@ -133,7 +156,7 @@ def query_search(keyword, movie_id=None, date_select=None, genre_select=None, ta
         result = result.filter(Q(id=movie_id))
 
     if keyword != "":  # if have specific keyword
-        result = result.filter(Q(title__icontains=keyword))
+        result = result.filter(Q(title__icontains=keyword)).order_by('title')
         if price_select:
             result = result.exclude(Q(price__gt=price_select[0]) | Q(price__lt=price_select[1]))
         if genre_select:
@@ -145,7 +168,6 @@ def query_search(keyword, movie_id=None, date_select=None, genre_select=None, ta
 
 
 def details(request, movie_id):
-    print(movie_id)
     start_time = time.time()
     try:
         data = query_search("", movie_id=movie_id)[0]
@@ -156,7 +178,6 @@ def details(request, movie_id):
 
 
 def add_cart(request, movie_id):
-    print(movie_id)
     start_time = time.time()
     data = query_search("", movie_id=movie_id)[0]
     elapsed_time = time.time() - start_time

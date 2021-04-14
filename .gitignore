@@ -4,3 +4,4 @@
 /catalog/migrations/
 db.sqlite3
 venv
+*.xml

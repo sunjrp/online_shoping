@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'online_shoping.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'db_mongo',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'online_test_db',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '3.1.142.80',
+        'PORT': '3306',
     }
 }
 
