@@ -52,9 +52,10 @@
                     </tr><br>
                     <h5>Movie id :&nbsp;&nbsp;&nbsp;&nbsp;{{query.id}}</h5>
                     <h5>Genre :&nbsp;&nbsp;
-                        <span class='btn btn-warning' style="color:#FFFFFF"><strong>{{query.genre}}</strong></span>
+                        {% for g in genre %}
+                        <span class='btn btn-warning' style="color:#FFFFFF"><strong>{{g.name}}</strong></span>
+                        {% endfor %}
                     </h5>
-                    <h5>Query time :&nbsp;&nbsp;&nbsp;&nbsp;{{query_time}}</h5><br><br>
                     <h3 class="price">Price: <span>{{query.price}}</span></h3>
                     <a href="/cart/{{query.id}}" class="btn btn-primary">Add to cart</a>
                 </div>

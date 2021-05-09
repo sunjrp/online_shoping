@@ -56,7 +56,7 @@ def user_logout(request):
 
 
 def gen_movies(request):
-    add_movie(10000)
+    add_movie(100000)
     return render(request, 'home.html')
 
 
@@ -71,7 +71,7 @@ def create_movie(size):
     movie_structure = {'title': '', 'price': '', 'rating': '', 'storyline': '', 'release_date': '', 'genre': [] }
     movie_list = []
     # for first time run you must add genre first
-    if True:
+    if False:
         add_genres()
     d1 = datetime.strptime('1/1/2000 1:30 PM', '%m/%d/%Y %I:%M %p')
     d2 = datetime.strptime('1/1/2021 4:50 AM', '%m/%d/%Y %I:%M %p')
@@ -87,6 +87,7 @@ def create_movie(size):
         movie_structure['genre'] = set(movie_structure['genre'])
         movie_list.append(movie_structure.copy())
         movie_structure.clear()
+        print(item)
     return movie_list
 
 
@@ -134,13 +135,11 @@ def market(request):
 def search(request):
     keyword = request.GET['keyword']
     genre = request.GET['genres']
-    start_time = time.time()
     if genre:
         data = query_search(keyword, genre_select=genre)
     else:
         data = query_search(keyword)
-    elapsed_time = time.time() - start_time
-    return render(request, 'result.html', {'query': data, 'query_time': elapsed_time})
+    return render(request, 'result.html', {'query': data})
 
 
 def query_search(keyword, movie_id=None, date_select=None, genre_select=None, tag_select=None, price_select=None):
@@ -150,7 +149,9 @@ def query_search(keyword, movie_id=None, date_select=None, genre_select=None, ta
         result = result.exclude(Q(release_date__gt=date_select[0]) | Q(release_date__lt=date_select[1]))
 
     if movie_id:
-        result = result.filter(Q(id=movie_id))
+        result = Product.objects.get(id=movie_id)
+        genre = result.genre.all()
+        return result, genre
 
     if keyword != "":  # if have specific keyword
         result = result.filter(Q(title__icontains=keyword)).order_by('title')
@@ -165,17 +166,14 @@ def query_search(keyword, movie_id=None, date_select=None, genre_select=None, ta
 
 
 def details(request, movie_id):
-    start_time = time.time()
     try:
-        data = query_search("", movie_id=movie_id)[0]
+        data, genre = query_search("", movie_id=movie_id)
     except IndexError:
         data = "Can't find this movie id"
-    elapsed_time = time.time() - start_time
-    return render(request, 'movie_detail.html', {'query': data, 'query_time': elapsed_time})
+        genre = "None"
+    return render(request, 'movie_detail.html', {'query': data, 'genre': genre})
 
 
 def add_cart(request, movie_id):
-    start_time = time.time()
     data = query_search("", movie_id=movie_id)[0]
-    elapsed_time = time.time() - start_time
-    return render(request, 'cart.html', {'query': data, 'query_time': elapsed_time})
+    return render(request, 'cart.html', {'query': data})
