@@ -14,37 +14,37 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="market">Home</a>
-
+          <a class="nav-link active" aria-current="page" href="market">Search</a>
         </li>
-
-
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Welcome, {{ user.username }} </a>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Welcome, {{ user.username }} </a>
           </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Log Out</a>
-        </li>
+          <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Log Out</a>
+          </li>
           {% else %}
-        <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Log In</a>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Sign Up</a>
-        </li>
-{% endif %}
-
+          <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Log In</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Sign Up</a>
+          </li>
+          {% endif %}
       </ul>
     </div>
   </div>
 </nav>
+
+
 </head>
 <body style="background-color:#E5E4E2;">
 
 <br><br><br>
 {% block content %}
-
+<div align="center">
+  <a href="market" type="submit" class="btn btn-danger"><h1>TO SEARCH</h1></a>
+</div>
 {% endblock %}
 </body>
 </html>
