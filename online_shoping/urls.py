@@ -22,6 +22,7 @@ from catalog import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('temp', views.temp, name='temp'),
     path('market', views.market, name='market'),
     path('search', views.search),
     path('movie_detail/<int:movie_id>', views.details),
