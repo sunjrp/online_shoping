@@ -116,6 +116,8 @@ def add_movie(size):
 def home(request):
     return render(request, 'home.html')
 
+def temp(request):
+    return render(request, 'temp.html')
 
 def market(request):
     genre = Genre.objects.all()
